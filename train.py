@@ -8,6 +8,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.utils import class_weight
+
 import numpy as np
 import tensorflow as tf
 from utils import load_imgs
@@ -29,7 +30,7 @@ target_size = (224, 224)
 # load unprocessed images
 data_x, data_y = load_imgs(datapath='/home/tkdrlf9202/Datasets/shoes_classification',
                            classes=classes, target_size=target_size)
-
+print(data_x.shape)
 # preprocess images for the model
 data_x = preprocess_input(data_x)
 
@@ -51,6 +52,7 @@ generator = image.ImageDataGenerator(zca_whitening=False, rotation_range=10,
                                      width_shift_range=0.1, height_shift_range=0.1,
                                      shear_range=0.02, zoom_range=0.1,
                                      channel_shift_range=0.05, horizontal_flip=True)
+
 # fit the generator (required if zca_whitening=True)
 generator.fit(data_x)
 
@@ -68,16 +70,16 @@ for layer in model_baseline.layers[:154]:
     layer.trainable = False
 
 # compile
-opt = Adam(lr=0.0005)
-opt_sgd = SGD(lr=5*1e-5, momentum=0.9)
-model_shoes.compile(optimizer=opt_sgd, loss='sparse_categorical_crossentropy',
+opt = Adam(lr=0.0001)
+opt_sgd = SGD(lr=5*1e-4, momentum=0.9)
+model_shoes.compile(optimizer=opt, loss='sparse_categorical_crossentropy',
                     metrics=['accuracy'])
 model_shoes.summary()
 
 # train
 batch_size = 32
-early_stop = EarlyStopping(monitor='val_loss', patience=5)
-ckpt = ModelCheckpoint(filepath='ckpt-{epoch:02d}-{val_loss:.2f}.h5', verbose=1, save_best_only=True, mode='auto')
+early_stop = EarlyStopping(monitor='val_loss', patience=10)
+ckpt = ModelCheckpoint(filepath='ckpt_adam_nocrop_norm-{epoch:02d}-{val_loss:.2f}.h5', verbose=1, save_best_only=True, mode='auto')
 model_shoes.fit_generator(generator.flow(data_x_train, data_y_train, batch_size=batch_size, shuffle=True),
                           epochs=1000,
                           steps_per_epoch=int(data_x.shape[0])/batch_size,
@@ -86,5 +88,5 @@ model_shoes.fit_generator(generator.flow(data_x_train, data_y_train, batch_size=
                           callbacks=[early_stop, ckpt])
 
 # save the model
-model_shoes.save('model_shoes_freeze_2_sgd_clsweight.h5')
+model_shoes.save('model_shoes_freeze_2_adam_clsweight_nocrop_norm.h5')
 print('model saved')
