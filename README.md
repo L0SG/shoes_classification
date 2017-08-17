@@ -1,7 +1,12 @@
 # Shoes classification
 Simple shoes classification with ResNet50 in Keras for Deepest Hackaton Challenge
 Achieves ~77% accuracy in validation dataset.
-This code is written in Deepest Hackaton challenge. It uses pre-trained ResNet50 for transfer learning. It unfreezes the last 2 redisual blocks for fine-tuning
+
+This code is written in Deepest Hackaton challenge. 
+
+It uses pre-trained ResNet50 for transfer learning. 
+
+It unfreezes the last 2 redisual blocks for fine-tuning.
 
 ## How to use
 Requires Keras and Scikit-learn
