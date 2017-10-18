@@ -14,3 +14,10 @@ Run train.py to fine-tune ResNet50 with the dataset.
 You could use any arbitaray image dataset, by appropriately constructing your images with subfolders and modifying the class names in the code
 
 Run inferencce.py to validate the model with test dataset.
+
+## Download Shoes Dataset
+You can download the dataset here
+
+https://drive.google.com/open?id=0B05wqMLeCbG-blZpVTlEZWQ3NWs
+
+It contains 14 classes in jpg image format with variable sizes (crawled from Google & Naver image search)
