@@ -21,3 +21,5 @@ You can download the dataset here
 https://drive.google.com/open?id=0B05wqMLeCbG-blZpVTlEZWQ3NWs
 
 It contains 14 classes in jpg image format with variable sizes (crawled from Google & Naver image search)
+
+Unzip and specify the location of the dataset at datapath parameter in load_imgs function
